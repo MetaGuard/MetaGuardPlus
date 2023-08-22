@@ -51,7 +51,7 @@ encoder = keras.Sequential([
     layers.LSTM(LAYER_SIZE),
     layers.Dense(LAYER_SIZE),
     layers.Dense(LAYER_SIZE)
-])
+], name='action-encoder')
 
 # Define the action similarity model architecture
 x1 = layers.Input(shape=(900, 21))
@@ -95,6 +95,7 @@ model.evaluate([testX1, testX2], testY, batch_size=BATCH_SIZE)
 # Save model
 print("Saving action similarity model...")
 model.save('./models/action-similarity.keras')
+encoder.save('./models/action-encoder.keras')
 
 # Log performance results
 end_time = time.time()
