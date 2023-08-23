@@ -6,9 +6,9 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 # Configuration options
-NUM_USERS = 1000                        # Number of users for identification
-TRAIN_SIZE = 50                         # Number of samples for each class for training
-TEST_SIZE = 50                          # Number of samples for each class for testing
+NUM_USERS = 5000                        # Number of users for identification
+TRAIN_SIZE = 10                         # Number of samples for each class for training
+TEST_SIZE = 10                          # Number of samples for each class for testing
 LAYER_SIZE = 256                        # Hidden size for DNN/LSTM layers
 BATCH_SIZE = 256                        # Batch size for training and testing
 
