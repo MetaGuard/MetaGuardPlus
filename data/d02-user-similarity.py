@@ -9,7 +9,7 @@ REPLAY_DIR = "Z:/beatleader/replays/"   # Directory with replays
 TRAIN_SIZE = 50000                      # Number of pairs for each class for training
 VAL_SIZE = 5000                         # Number of pairs for each class for testing
 TEST_SIZE = 5000                        # Number of pairs for each class for validation
-MIN_REPLAYS = 500                       # Minimum number of replays per user for inclusion
+MIN_REPLAYS = 1000                      # Minimum number of replays per user for inclusion
 
 # Start measuring performance
 start_time = time.time()
