@@ -104,7 +104,14 @@ def handle_bsor(name):
         out.append(f_interp(time))
 
     with np.errstate(over='raise'):
-        return np.array(out).astype('float16')
+        res = np.array(out).astype('float16')
+
+    if (np.isnan(res).any()): raise Exception()
+    if (np.isinf(res).any()): raise Exception()
+    if (np.any(res > 4)): raise Exception()
+    if (np.any(res < -2)): raise Exception()
+
+    return res
 
 # Function to get two replays from different maps
 different = []
@@ -129,11 +136,6 @@ def getDifferent():
     except:
         return
 
-    if (np.isnan(s1).any()): return
-    if (np.isnan(s2).any()): return
-    if (np.isinf(s1).any()): return
-    if (np.isinf(s2).any()): return
-
     different.append([s1, s2])
 
 # Function to get two replays from the same level
@@ -157,11 +159,6 @@ def getSame():
         s2 = handle_bsor(rp2)
     except:
         return
-
-    if (np.isnan(s1).any()): return
-    if (np.isnan(s2).any()): return
-    if (np.isinf(s1).any()): return
-    if (np.isinf(s2).any()): return
 
     same.append([s1, s2])
 
