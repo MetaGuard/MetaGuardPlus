@@ -95,7 +95,6 @@ model.evaluate([testX1, testX2], testY, batch_size=BATCH_SIZE)
 # Save model
 print("Saving action similarity model...")
 model.save('./models/action-similarity.keras')
-encoder.save('./models/action-encoder.keras')
 
 # Log performance results
 end_time = time.time()
