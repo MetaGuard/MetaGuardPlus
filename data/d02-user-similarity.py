@@ -9,7 +9,7 @@ REPLAY_DIR = "Z:/beatleader/replays/"   # Directory with replays
 TRAIN_SIZE = 50000                      # Number of pairs for each class for training
 VAL_SIZE = 5000                         # Number of pairs for each class for testing
 TEST_SIZE = 5000                        # Number of pairs for each class for validation
-MIN_REPLAYS = 1000                      # Minimum number of replays per user for inclusion
+MIN_REPLAYS = 100                       # Minimum number of replays per user for inclusion
 
 # Start measuring performance
 start_time = time.time()
@@ -111,7 +111,14 @@ def handle_bsor(name):
         out.append(f_interp(time))
 
     with np.errstate(over='raise'):
-        return np.array(out).astype('float16')
+        res = np.array(out).astype('float16')
+
+    if (np.isnan(res).any()): raise Exception()
+    if (np.isinf(res).any()): raise Exception()
+    if (np.any(res > 4)): raise Exception()
+    if (np.any(res < -2)): raise Exception()
+
+    return res
 
 # Function to get two replays from different users
 different = []
@@ -138,11 +145,6 @@ def getDifferent():
     except:
         return
 
-    if (np.isnan(s1).any()): return
-    if (np.isnan(s2).any()): return
-    if (np.isinf(s1).any()): return
-    if (np.isinf(s2).any()): return
-
     different.append([s1, s2])
 
 # Function to get two replays from the same user
@@ -166,11 +168,6 @@ def getSame():
         s2 = handle_bsor(rp2)
     except:
         return
-
-    if (np.isnan(s1).any()): return
-    if (np.isnan(s2).any()): return
-    if (np.isinf(s1).any()): return
-    if (np.isinf(s2).any()): return
 
     same.append([s1, s2])
 
