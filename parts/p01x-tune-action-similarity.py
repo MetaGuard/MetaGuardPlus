@@ -56,7 +56,7 @@ start_perf = model.evaluate([testX1, testX2], testY, batch_size=BATCH_SIZE)
 adam = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
 model.compile(
     loss="binary_crossentropy", # Use categorical crossentropy as the loss function
-    optimizer="adam", # Use adam as the optimizer
+    optimizer=adam, # Use adam as the optimizer
     metrics=["accuracy"] # Use accuracy as the metric
 )
 
