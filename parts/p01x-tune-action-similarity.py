@@ -13,7 +13,7 @@ VAL_SIZE = 5000                         # Number of pairs for each class for tes
 TEST_SIZE = 5000                        # Number of pairs for each class for validation
 LAYER_SIZE = 256                        # Hidden size for DNN/LSTM layers
 BATCH_SIZE = 256                        # Batch size for training and testing
-LEARNING_RATE = 0.00001                 # Learning rate for Adam optimizer
+LEARNING_RATE = 0.0001                  # Learning rate for Adam optimizer
 
 # Start measuring performance
 start_time = time.time()
