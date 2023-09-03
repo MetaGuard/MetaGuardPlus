@@ -19,6 +19,11 @@ print("Scanning replay directory...")
 replays = list(os.listdir(REPLAY_DIR))
 print("Found " + str(len(replays)) + " replays.")
 
+# Save replay list as .txt
+f = open("./user-identification/all-replays.txt", "w")
+f.writelines([r + "\n" for r in replays])
+f.close()
+
 # Group replays by users
 print("Grouping replays...")
 users = {}
@@ -110,11 +115,23 @@ def handle_bsor(name):
         time += 1/30
         out.append(f_interp(time))
 
+    notes = []
+    for note in m.notes:
+        if note.event_time < 30:
+            notes.append([
+                note.note_id,
+                note.event_time
+            ])
+
+    notes = notes + ([[0,0]] * 100)
+    notes = notes[:100]
+
     with np.errstate(over='raise'):
-        return np.array(out).astype('float16')
+        return np.array(out).astype('float16'), np.array(notes).astype('float16')
 
 # Function to get two replays from different users
-output = []
+output_motion = []
+output_notes = []
 o_users = []
 def getUser():
     user = np.random.choice(user_names)
@@ -122,6 +139,7 @@ def getUser():
     o_users.append(user)
 
     replays = []
+    notes = []
     np.random.shuffle(users[user])
     k = -1
 
@@ -136,27 +154,35 @@ def getUser():
             rp = users[user][k]
 
             try:
-                s = handle_bsor(rp)
+                s, n = handle_bsor(rp)
             except:
                 continue
 
             if (np.isnan(s).any()): continue
             if (np.isinf(s).any()): continue
+            if (np.isnan(n).any()): continue
+            if (np.isinf(n).any()): continue
 
             replays.append(s)
+            notes.append(n)
 
-    output.append(replays)
+    output_motion.append(replays)
+    output_notes.append(notes)
 
 # Create user replay set
 print("Processing replays...")
 for i in trange(NUM_USERS):
-    while (len(output) <= i):
+    while (len(output_motion) <= i):
         getUser()
 
 # Save results
-out = np.array(output).astype('float16')
-print('Saving result of shape ' + str(out.shape) + '...')
+out = np.array(output_motion).astype('float16')
+print('Saving motion of shape ' + str(out.shape) + '...')
 np.save('./user-identification/user-replays', out)
+
+out = np.array(output_notes).astype('float16')
+print('Saving notes of shape ' + str(out.shape) + '...')
+np.save('./user-identification/user-notes', out)
 
 # Log performance results
 end_time = time.time()
