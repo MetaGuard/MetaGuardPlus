@@ -8,7 +8,7 @@ from bsor.Bsor import make_bsor
 REPLAY_DIR = "Z:/beatleader/replays/"   # Directory with replays
 MIN_REPLAYS = 20                        # Minimum number of replays per user for inclusion
 MAX_REPLAYS = 80                        # Maximum number of replays per user for inclusion
-NUM_USERS = 5000                        # Number of users to include
+NUM_USERS = 500                         # Number of users to include
 NUM_REPLAYS = 20                        # Number of replays per user to include
 
 # Start measuring performance
@@ -127,7 +127,15 @@ def handle_bsor(name):
     notes = notes[:100]
 
     with np.errstate(over='raise'):
-        return np.array(out).astype('float16'), np.array(notes).astype('float16')
+        res = np.array(out).astype('float16')
+
+    if (np.isnan(res).any()): raise Exception()
+    if (np.isinf(res).any()): raise Exception()
+    if (np.any(res > 4)): raise Exception()
+    if (np.any(res < -2)): raise Exception()
+
+    with np.errstate(over='raise'):
+        return res, np.array(notes).astype('float16')
 
 # Function to get two replays from different users
 output_motion = []
