@@ -7,8 +7,8 @@ from tensorflow.keras import layers
 import keras.backend as K
 
 # Configuration options
-TRAIN_SIZE = 25000                      # Number of pairs for each class for training
-TEST_SIZE = 5000                        # Number of pairs for each class for testing
+TRAIN_SIZE = 24576                      # Number of pairs for each class for training
+TEST_SIZE = 4096                        # Number of pairs for each class for testing
 LAYER_SIZE = 256                        # Hidden size for DNN/LSTM layers
 BATCH_SIZE = 256                        # Batch size for training and testing
 
@@ -21,8 +21,8 @@ train_true = np.load("../data/user-similarity/train-true.npy")[:TRAIN_SIZE]
 train_false = np.load("../data/user-similarity/train-false.npy")[:TRAIN_SIZE]
 trainX1 = np.concatenate([train_true[:,0], train_false[:,0]]).astype('float16')
 trainX2 = np.concatenate([train_true[:,1], train_false[:,0]]).astype('float16')
-test_true = np.load("../data/user-similarity/test-true.npy")
-test_false = np.load("../data/user-similarity/test-false.npy")
+test_true = np.load("../data/user-similarity/test-true.npy")[:TEST_SIZE]
+test_false = np.load("../data/user-similarity/test-false.npy")[:TEST_SIZE]
 testX1 = np.concatenate([test_true[:,0], test_false[:,0]]).astype('float16')
 testX2 = np.concatenate([test_true[:,1], test_false[:,0]]).astype('float16')
 
@@ -110,7 +110,7 @@ def train(lr):
             'action-encoder_1': 'mae'
         },
         loss_weights={
-            'user-similarity': 1,
+            'user-similarity': 0.1,
             'action-similarity': 1,
             'action-similarity_1': 1,
             'action-encoder': 0.1,
