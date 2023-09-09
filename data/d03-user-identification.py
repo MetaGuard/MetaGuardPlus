@@ -8,7 +8,7 @@ from bsor.Bsor import make_bsor
 REPLAY_DIR = "Z:/beatleader/replays/"   # Directory with replays
 MIN_REPLAYS = 20                        # Minimum number of replays per user for inclusion
 MAX_REPLAYS = 80                        # Maximum number of replays per user for inclusion
-NUM_USERS = 500                         # Number of users to include
+NUM_USERS = 5000                        # Number of users to include
 NUM_REPLAYS = 20                        # Number of replays per user to include
 
 # Start measuring performance
