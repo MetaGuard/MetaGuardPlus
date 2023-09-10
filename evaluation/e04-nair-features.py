@@ -25,7 +25,7 @@ np.save('./anonymity/nair-metaguard', nair)
 
 # MetaGuard++ group
 print("Processing MetaGuard++ feautres...")
-noise = np.random.normal(size=(1000,32)).astype('float16')
+noise = np.random.normal(size=(10000,32)).astype('float16')
 noise = np.repeat(noise, 10, axis=0)
 anonymized = metaguardplus(replays.reshape(-1, 900, 21), noise)
 nair = nairfeatures(np.array(anonymized).reshape(-1, 20, 900, 21), notes)
