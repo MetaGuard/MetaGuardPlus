@@ -3,9 +3,11 @@ import random
 import string
 import os
 import numpy as np
+from tqdm import tqdm
 from common.xror import XROR
-from common.Bsor import make_bsor
 from common.parse import handle_bsor
+from common.metaguard import metaguard
+from common.metaguardplus import metaguardplus
 
 # Define map pool
 pool = {
@@ -29,6 +31,9 @@ pool = {
     ]
 }
 
+# Configuration options
+MIN_REPLAYS = 100             # Minimum number of replays per user for inclusion
+
 # Shuffle map pool
 for cat in ['acc', 'tech', 'speed']:
     np.random.shuffle(pool[cat])
@@ -41,28 +46,38 @@ with open('../data/user-identification/all-replays.txt') as file:
 replays = [r.split('.')[0] for r in replays]
 
 # Sort by map
+print("Sorting replays...")
 maps = {}
-for r in replays:
+for r in tqdm(replays):
     map = r.split('-', 1)[-1]
     if (not map in maps): maps[map] = []
     maps[map].append(r)
 
 # Load maps
+print("Selecting replays...")
 groups = ['control', 'artificial', 'metaguard', 'metaguardplus']
-ids = []
+ids = list(range(12))
+np.random.shuffle(ids)
+n = 0
 for i in range(4):
     group = groups[i]
     for cat in ['acc', 'tech', 'speed']:
         map = pool[cat][i]
-        id = ''.join([random.choice(string.ascii_letters) for i in range(5)])
-        ids.append(id)
-        os.makedirs('./usability/replays/' + id)
+        id = ids[n]
+        n += 1
         np.random.shuffle(maps[map])
         j = 0
         k = 0
+        c = random.randint(0, 3)
+
+        # Create output folder
+        if not os.path.exists('./usability/replays/' + str(id)):
+            os.makedirs('./usability/replays/' + str(id))
+
         while (j < 4):
             try:
                 replay = maps[map][k]
+                user = replay.split('-')[0]
                 k += 1
 
                 with open('Z:/beatleader/replays/' + replay + '.bsor', 'rb') as f:
@@ -70,20 +85,43 @@ for i in range(4):
 
                 frames = handle_bsor('Z:/beatleader/replays/' + replay + '.bsor')
                 times = np.arange(0, 30, 1/30).reshape(900,1)
+
+                # Remove most existing metadata
                 xror.data['info']['software']['activity']['failTime'] = 30
+                xror.data['info']['timestamp'] = 0
+                xror.data['info']['hardware']['devices'][0]['name'] = 'HMD'
+                xror.data['info']['hardware']['devices'][1]['name'] = 'LEFT'
+                xror.data['info']['hardware']['devices'][2]['name'] = 'RIGHT'
+                xror.data['info']['software']['app']['version'] = '1.X.X'
+                xror.data['info']['software']['app']['extensions'][0]['version'] = '0.X.X'
+                xror.data['info']['software']['runtime'] = 'oculus'
+                xror.data['info']['software']['api'] = 'Oculus'
+                xror.data['info']['user']['id'] = '100000000'
+                xror.data['info']['user']['name'] = 'Anonymous'
+
+                # Process anonymization if applicable
+                if (j == c):
+                    if (group == 'metaguard'):
+                        frames = metaguard([frames])[0]
+                    if (group == 'metaguardplus'):
+                        noise = np.random.normal(size=32).astype('float16')
+                        frames = metaguardplus(np.repeat([frames], 500, axis=0), np.repeat([noise], 500, axis=0))[0]
+                    if (group == 'artificial'):
+                        frames = handle_bsor('./usability/artificial/165749-' + map + '.bsor')
+
+                # Freeze motion for first second
+                for f in range(30):
+                    frames[f] = frames[30]
+
                 xror.data['frames'] = np.hstack([times, frames])
 
                 bsor = xror.toBSOR()
-                with open('./usability/replays/' + id + '/' + str(j), 'wb') as f:
+                with open('./usability/replays/' + str(id) + '/' + str(j) + '.bsor', 'wb') as f:
                     f.write(bsor)
 
                 j += 1
 
-            except:
+            except Exception as e:
                 continue
 
-        print(id, group, cat, map)
-
-np.random.shuffle(ids)
-with open('./usability/groups.txt', 'w') as f:
-    f.write(",".join(ids))
+        print(id, group, cat, map, c)
