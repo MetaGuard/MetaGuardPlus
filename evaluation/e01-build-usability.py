@@ -11,22 +11,22 @@ from common.metaguardplus import metaguardplus
 
 # Define map pool
 pool = {
-    'acc': [ # Most popular acc maps under 4 stars
+    'acc': [ # Most popular acc maps under 6 stars
         'Hard-Standard-51CB5A9D50F73FEAC9380570CEC13A91D3824E64', # Enemy
-        'Hard-Standard-83475886CE251C12F1C1755D15A2FE494776AE93', # me & u
-        'Hard-Standard-6BE290E33FD748CD678D4C38F1D59E582A44045F', # Introduction
         'Hard-Standard-87EFECA37C255E63F8E1EC28C6ABD94A128631C0', # Trauma
+        'Hard-Standard-4D03502003602E8E8F0D9F8C84A3E70DA0C389F6', # 99.9
+        'Hard-Standard-595F76619E3058472A9DE19DAFCEFFD2B5392093', # Gypsy Tronic
     ],
     'tech': [ # Most popular tech maps from 4 to 8 stars
         'Expert-Standard-43304202EC7681E52B4026313C7AB9099BE2890D', # 666
-        'Expert-Standard-3C37D1264FC2754051B4045AC84909CDF0703D62', # Tribal Trial
-        'Expert-Standard-EDDCA14F0E90F5DA5A2337B8DD2B1EB381771400', # Deimos
-        'Expert-Standard-8E6BC0438A81C60AEEC4E9AFB937145FC9ECD947', # Chakra
+        'Expert-Standard-B25D5435EF97A85549620125C28A28A153CE396F', # Cheatcode
+        'Expert-Standard-4B6672956A0B64FE7922F5DF932077C716D27808', # Cambodia
+        'Expert-Standard-816E3A71BB3053B4C1DA3F7A1875C721B2764039', # Time Leaper
     ],
     'speed': [ # Most popular speed/midspeed maps from 8 to 12 stars
         'ExpertPlus-Standard-619250FCF1D3A479D53469B9250837391AE449EA', # Fresh!
         'ExpertPlus-Standard-BA220888BB848D07BDFE3C49A4960E487C63BE82', # SCREW // owo // SCREW
-        'ExpertPlus-Standard-4D03502003602E8E8F0D9F8C84A3E70DA0C389F6', # 99.9
+        'ExpertPlus-Standard-27860892DD00DF00DA30A3DB12C23A6999EB853F', # Night Raid
         'ExpertPlus-Standard-64688EE557A6C0916D2108AA3B39DD79C8468DB3', # eden
     ]
 }
