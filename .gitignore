@@ -1,5 +1,6 @@
-# Numpy files
+# Data files
 *.npy
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
