@@ -28,10 +28,10 @@ testY = np.repeat(np.arange(N), 300)
 # Train a LightGBM model
 def train(trainX, trainY):
     clf = LGBMClassifier(boosting_type='goss', colsample_bytree=0.6933333333333332, learning_rate=0.1, \
-    max_bin=63, max_depth=-1, min_child_weight=7, min_data_in_leaf=20, \
-    min_split_gain=0.9473684210526315, n_estimators=100, histogram_pool_size=8192, \
+    max_bin=63, max_depth=-1, min_child_weight=7, min_child_samples=20, \
+    min_split_gain=0.9473684210526315, n_estimators=200, histogram_pool_size=-1, \
     num_leaves=33, reg_alpha=0.7894736842105263, reg_lambda=0.894736842105263, \
-    subsample=1, n_jobs=12, objective='multiclass', device_type='gpu')
+    subsample=1, n_jobs=16, objective='multiclass', device_type='gpu')
 
     clf.fit(trainX, trainY, eval_set=[(trainX, trainY)], eval_metric='multi_error', callbacks=[log_evaluation()])
 
@@ -55,14 +55,14 @@ test(model, controlTestX, "Control")
 test(model, metaguardTestX, "MetaGuard")
 test(model, metaguardPlusTestX, "MetaGuard++")
 
-# Train adaptive miller nair (MetaGuard)
+# Train adaptive nair model (MetaGuard)
 print("Training Nair model (MetaGuard)...")
 model = train(metaguardTrainX, trainY)
 test(model, controlTestX, "Control")
 test(model, metaguardTestX, "MetaGuard")
 test(model, metaguardPlusTestX, "MetaGuard++")
 
-# Train adaptive miller nair (MetaGuard++)
+# Train adaptive nair model (MetaGuard++)
 print("Training Nair model (MetaGuard++)...")
 model = train(metaguardPlusTrainX, trainY)
 test(model, controlTestX, "Control")

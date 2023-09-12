@@ -110,7 +110,7 @@ def train(lr):
             'action-encoder_1': 'mae'
         },
         loss_weights={
-            'user-similarity': 0.1,
+            'user-similarity': 1,
             'action-similarity': 1,
             'action-similarity_1': 1,
             'action-encoder': 0.1,

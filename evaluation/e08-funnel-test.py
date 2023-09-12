@@ -49,50 +49,39 @@ def train(trainX, trainY):
         metrics=["accuracy"] # Use accuracy as the metric
     )
 
-    # Configure early stopping
-    early_stopping = keras.callbacks.EarlyStopping(
-        monitor="accuracy",
-        patience=10,
-        verbose=1,
-        mode="max",
-        restore_best_weights=True
-    )
-
     # Train the model on the train data
-    model.fit(trainX, trainY,
-              epochs=100,
-              batch_size=256,
-              shuffle=True,
-              callbacks=[early_stopping])
+    model.fit(trainX, trainY, epochs=50, batch_size=256, shuffle=True)
 
     return model
 
 # Test a Keras LSTM model
 def test(clf, testX, name):
     print("--", name, "--")
-    predY = clf.predict(testX).argmax(axis=-1)
-    acc = accuracy_score(testY, predY)
+    predY = clf.predict(testX)
+    acc = accuracy_score(testY, predY.argmax(axis=1))
     print("Accuracy (Per Sample): " + str(acc))
-    predY = [np.bincount(x).argmax() for x in predY.reshape(-1, 10)]
+
+    with np.errstate(divide='ignore'):
+        predY = np.log(predY).reshape(-1, 10, N).sum(axis=1).argmax(axis=1)
     acc = accuracy_score(list(range(N)), predY)
     print("Accuracy (Per User): " + str(acc))
 
-# Train non-adaptive nair model
-print("Training Nair model...")
+# Train non-adaptive funnel model
+print("Training LSTM model...")
 model = train(controlTrainX, train_labels)
 test(model, controlTestX, "Control")
 test(model, metaguardTestX, "MetaGuard")
 test(model, metaguardPlusTestX, "MetaGuard++")
 
-# Train adaptive miller nair (MetaGuard)
-print("Training Nair model (MetaGuard)...")
+# Train adaptive funnel model (MetaGuard)
+print("Training LSTM model (MetaGuard)...")
 model = train(metaguardTrainX, train_labels)
 test(model, controlTestX, "Control")
 test(model, metaguardTestX, "MetaGuard")
 test(model, metaguardPlusTestX, "MetaGuard++")
 
-# Train adaptive miller nair (MetaGuard++)
-print("Training Nair model (MetaGuard++)...")
+# Train adaptive funnel model (MetaGuard++)
+print("Training LSTM model (MetaGuard++)...")
 model = train(metaguardPlusTrainX, train_labels)
 test(model, controlTestX, "Control")
 test(model, metaguardTestX, "MetaGuard")

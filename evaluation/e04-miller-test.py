@@ -28,9 +28,9 @@ testY = np.repeat(np.arange(N), 300)
 # Train a random forest model
 def trainrf(trainX, trainY):
     rf = RandomForestClassifier(
-        n_estimators=12,
-        n_jobs=12,
-        max_depth=24,
+        n_estimators=16,
+        n_jobs=16,
+        max_depth=22,
         verbose=100
     )
     rf.fit(trainX, trainY)
