@@ -20,6 +20,7 @@ We used Python v3.10.2 on Windows 10 for training and testing all components of 
 - matplotlib v3.5.2
 - lightgbm v3.3.3
 - scikit-learn v1.2.0
+- matplotlib v3.5.2
 
 #### Dataset
 Training and testing this system requires use of the Berkeley Open Extended Reality Recording Dataset 2023 (BOXRR-23) dataset, available for free at https://rdi.berkeley.edu/metaverse/boxrr-23/.
@@ -96,6 +97,37 @@ We performed our anonymity evaluation using 20 randomly sampled recordings of 1,
 - Using the method of Miller et al. (2020) [[3]](https://www.nature.com/articles/s41598-020-74486-y), the users can be identified with 90.3% accuracy. With MetaGuard++, the accuracy drops to 1.5% (non-adaptive) or 1.2% (adaptive).
 - Using the method of Nair et al. (2022) [[1]](https://www.usenix.org/conference/usenixsecurity23/presentation/nair-identification), the users can be identified with 91.0% accuracy. With MetaGuard++, the accuracy drops to 3.1% (non-adaptive) or 3.5% (adaptive).
 - Using our new LSTM-based method, the users can be identified with 96.5% accuracy. With MetaGuard++, the accuracy drops to 3.7% (non-adaptive) or 0.1% (adaptive).
+
+##### Observed Usability Results
+
+Our usability study received 241 responses, of which 182 were valid responses (contained at least one correct answer). Of those, 149 were from expert Beat Saber players, and the remaining 33 participants were novice players. The distinguishability (ability to detect tampering) for each of the evaluated treatments amongst each group was as follows:
+
+```
+-- All --
+N = 182
+control          17.67%
+artificial       71.38%
+metaguard        64.97%
+metaguardplus    23.67%
+
+-- Novices --
+N = 33
+control          16.22%
+artificial       72.5%
+metaguard        50.0%
+metaguardplus    21.05%
+
+-- Experts --
+N = 149
+control          17.87%
+artificial       71.21%
+metaguard        67.19%
+metaguardplus    24.05%
+```
+
+A graph of the observed results is included below.
+
+![](./evaluation/usability/results.png)
 
 Copyright &copy;2023 Berkeley RDI -- License [BSD](https://github.com/metaguard/metaguardplus/blob/main/LICENSE)
 
