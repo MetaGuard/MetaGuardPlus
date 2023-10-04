@@ -89,4 +89,5 @@ ax.legend(loc='upper left')
 ax.set_ylim(0, 100)
 
 plt.savefig("./usability/results.pdf",bbox_inches='tight')
+plt.savefig("./usability/results.png",bbox_inches='tight')
 plt.show()
