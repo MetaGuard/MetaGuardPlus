@@ -27,13 +27,25 @@ Training and testing this system requires use of the Berkeley Open Extended Real
 
 #### Usage
 
+##### 0. Motivation: `motivation/`
+
+This group of scripts exists to motivate the need for MetaGuard++. They are not essential for training a deep motion masking model, and can safely be skipped.
+
+- To run the identification evaluation using our new LSTM Funnel method, run `m01-dataset.py` and then run `m02-model.py`.
+- To run the identification evaluation using the method of Miller et al. (2020) [[3]](https://www.nature.com/articles/s41598-020-74486-y), run `m03-miller-features.py` and then run `m04-miller-test.py`.
+- To run the identification evaluation using the method of Nair et al. (2023) [[1]](https://www.usenix.org/conference/usenixsecurity23/presentation/nair-identification), run `m05-nair-features.py` and then run `m06-nair-test.py`.
+
 ##### 1. Data Sampling: `data/`
+
+This group of scripts handles the data preprocessing necessary to train and evaluate a deep motion masking model.
 
 - To sample replays for training the action similarity model, run `d01-action-similarity.py`.
 - To sample replays for training the user similarity model, run `d02-user-similarity.py`.
 - To sample replays for evaluating the user identification accuracy, run `d03-user-identification.py`.
 
 ##### 2. Components: `parts/`
+
+This group of scripts trains all of the individual components of a deep motion masking model.
 
 - To train the action similarity model, run `p01-action-similarity.py`.
   - The action similarity model can be fine-tuned by running `p01x-tune-action-similarity.py`.
@@ -44,14 +56,19 @@ Training and testing this system requires use of the Berkeley Open Extended Real
 
 ##### 3. Preview: `preview/`
 
+This script exists to help preview the results of a trained model anonymization. It is not essential for the evaluation, and can safely be skipped.
+
 - To preview the anonymized motion data with and without normalization, place one or more Beat Saber replays in the `0-replays` folder and run `preview.py`. The control, anonymized, and normalized versions of the replays will be placed in the `1-control`, `2-anonymized`, and `3-normalized` folders, respectively. You can then use a [web replay viewer](https://replay.beatleader.xyz) to visualize the replays.
 
 ##### 4. Evaluation: `evaluation/`
+
+This group of scripts exists to facilitate the evaluation of a deep motion masking model.
 
 - Run `e01-build-usability.py` to set up the randomized human study portion of the evaluation. Place responses in `usability/results.txt` in CSV format, then run `e02-analyze-usability.py` to evaluate the usability results.
 - To run the anonymity evaluation using the method of Miller et al. (2020) [[3]](https://www.nature.com/articles/s41598-020-74486-y), run `e03-miller-features.py` and then run `e04-miller-test.py`.
 - To run the anonymity evaluation using the method of Nair et al. (2023) [[1]](https://www.usenix.org/conference/usenixsecurity23/presentation/nair-identification), run `e05-nair-features.py` and then run `e06-nair-test.py`.
 - To run the anonymity evaluation using our new LSTM-based method, run `e07-funnel-features.py` and then run `e08-funnel-test.py`.
+- To run the interactivity evaluation, run `e09-interactivity-data.py` and then run `e10-interactivity-test.py`.
 
 #### Sample Results
 
@@ -63,6 +80,13 @@ The observed runtime of each script was as follows:
 
 | **Script**                  | **Runtime** |
 |-----------------------------|-------------|
+| m01-dataset                 | 37h 14m 18s |
+| m02-model                   | 3h 49m 34s  |
+| m03-miller-features         | 2h 54m 25s  |
+| m04-miller-model            | 0h 4m 8s    |
+| m05-nair-features           | 16h 31m 50s |
+| m06-nair-model              | 0h 13m 47s  |
+|                             |             |
 | d01-action-similarity       | 55h 40m 5s  |
 | d02-user-similarity         | 57h 12m 9s  |
 | d03-user-identification     | 3h 24m 27s  |
@@ -80,6 +104,10 @@ The observed runtime of each script was as follows:
 | e06-nair-test               | 1h 12m 17s  |
 | e07-funnel-features         | 0h 0m 34s   |
 | e08-funnel-test             | 0h 8m 18s   |
+| e09-interactivity-data      | 0h 37m 10s  |
+| e10-interactivity-test      | 0h 4m 32s   |
+|                             |             |
+| _Total_                     | _192h 52m_  |
 
 ##### Observed Training Metrics
 
@@ -128,6 +156,13 @@ metaguardplus    24.05%
 A graph of the observed results is included below.
 
 ![](./evaluation/usability/results.png)
+
+##### Observed Interactivity Results
+
+- The mean absolute difference in pre-swing angle was about 5°.
+- The mean absolute difference in post-swing angle was about 4°.
+- The average relative accuracy difference was about 14%.
+- The mean absolute difference in score was about 0.7%.
 
 Copyright &copy;2023 Berkeley RDI -- License [BSD](https://github.com/metaguard/metaguardplus/blob/main/LICENSE)
 
